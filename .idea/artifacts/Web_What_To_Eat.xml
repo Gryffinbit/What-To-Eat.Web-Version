@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jpackage" name="Web-What_To_Eat">
+    <output-path>$PROJECT_DIR$/out/artifacts/Web_What_To_Eat</output-path>
+    <root id="root">
+      <element id="archive" name="Web_What_To_Eat.jar">
+        <element id="module-output" name="Web-What_To_Eat" />
+      </element>
+    </root>
+  </artifact>
+</component>
