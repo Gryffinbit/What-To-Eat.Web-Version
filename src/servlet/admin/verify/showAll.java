@@ -1,4 +1,4 @@
-package servlet.admin.foodManage.verify;
+package servlet.admin.verify;
 
 import com.alibaba.fastjson.JSON;
 import service.impl.PublicFoodsServiceImpl;
