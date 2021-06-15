@@ -3,6 +3,7 @@ package servlet.admin.foodManage;
 import com.alibaba.fastjson.JSON;
 import entity.PublicFoods;
 import service.impl.PublicFoodsServiceImpl;
+import utils.FoodTools;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +24,8 @@ public class AddServlet extends HttpServlet {
         Hashtable ret = new Hashtable();
         ret.put("code",500);
         ret.put("msg","添加失败");
-        if(setPrim(food, request)){
+        if(FoodTools.setFoodPrimByReq(food, request)){
+            food.setVerify(true);
             PublicFoodsServiceImpl pbFdServiceImpl = new PublicFoodsServiceImpl();
             if(pbFdServiceImpl.addFood(food)){
                 ret.put("code",200);
@@ -35,28 +37,5 @@ public class AddServlet extends HttpServlet {
         writer.write(JSON.toJSONString(ret));
     }
 
-    public static boolean setPrim(PublicFoods food, HttpServletRequest request) {
-        try {
-            String foodName = request.getParameter("foodName");
-            String area = request.getParameter("area");
-            int minNum = Integer.parseInt(request.getParameter("minNum"));
-            int maxNum = Integer.parseInt(request.getParameter("maxNum"));
-            int minPrice = Integer.parseInt(request.getParameter("minPrice"));
-            int maxPrice = Integer.parseInt(request.getParameter("maxPrice"));
-            // int submitter = (int) request.getSession().getAttribute("uid");
-            int submitter = 1;
-            food.setFoodName(foodName);
-            food.setArea(area);
-            food.setMinNum(minNum);
-            food.setMaxNum(maxNum);
-            food.setMinPrice(minPrice);
-            food.setMaxPrice(maxPrice);
-            food.setSubmitter(submitter);
-            food.setModifyTime(new Timestamp(System.currentTimeMillis()));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
+
 }

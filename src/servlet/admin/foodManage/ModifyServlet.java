@@ -3,6 +3,7 @@ package servlet.admin.foodManage;
 import com.alibaba.fastjson.JSON;
 import entity.PublicFoods;
 import service.impl.PublicFoodsServiceImpl;
+import utils.FoodTools;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +25,8 @@ public class ModifyServlet extends HttpServlet {
         ret.put("msg","修改失败");
         try{
             int fid = Integer.parseInt(request.getParameter("fid"));
-            if(AddServlet.setPrim(food, request)){
+            if(FoodTools.setFoodPrimByReq(food, request)){
+                food.setVerify(true);
                 PublicFoodsServiceImpl pbFdServiceImpl = new PublicFoodsServiceImpl();
                 if(pbFdServiceImpl.modifyFood(fid, food)){
                     ret.put("code",200);
