@@ -18,6 +18,11 @@ public class ShowAllServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        showAll(request, response);
+    }
+
+    public void showAll(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         PublicFoodsServiceImpl pbFdServiceImpl = new PublicFoodsServiceImpl();
         Hashtable ret = new Hashtable();
         ret.put("code", 200);

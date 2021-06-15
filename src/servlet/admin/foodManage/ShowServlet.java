@@ -3,7 +3,6 @@ package servlet.admin.foodManage;
 import com.alibaba.fastjson.JSON;
 import service.impl.PublicFoodsServiceImpl;
 
-import javax.print.DocFlavor;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Dictionary;
 import java.util.Hashtable;
 
 @WebServlet("/admin/foodManage/show")
