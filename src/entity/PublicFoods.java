@@ -1,16 +1,18 @@
 package entity;
 
 import java.sql.Timestamp;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 public class PublicFoods {
     private int fid;
     private String foodName;
     private String area;
-    private String minNum;
-    private String maxNum;
-    private String minPrice;
-    private String maxPrice;
-    private String submitter;
+    private int minNum;
+    private int maxNum;
+    private int minPrice;
+    private int maxPrice;
+    private int submitter;
     private boolean verify;
     private Timestamp modifyTime;
 
@@ -26,28 +28,29 @@ public class PublicFoods {
         return foodName;
     }
 
-    public String getMaxNum() {
+    public int getMaxNum() {
         return maxNum;
     }
 
-    public String getMaxPrice() {
+    public int getMaxPrice() {
         return maxPrice;
     }
 
-    public String getMinNum() {
+    public int getMinNum() {
         return minNum;
     }
 
-    public String getMinPrice() {
+    public int getMinPrice() {
         return minPrice;
     }
 
-    public String getSubmitter() {
-        return submitter;
-    }
 
     public Timestamp getModifyTime() {
         return modifyTime;
+    }
+
+    public int getSubmitter() {
+        return submitter;
     }
 
     public boolean isVerify() {
@@ -66,19 +69,19 @@ public class PublicFoods {
         this.foodName = foodName;
     }
 
-    public void setMaxNum(String maxNum) {
+    public void setMaxNum(int maxNum) {
         this.maxNum = maxNum;
     }
 
-    public void setMaxPrice(String maxPrice) {
+    public void setMaxPrice(int maxPrice) {
         this.maxPrice = maxPrice;
     }
 
-    public void setMinNum(String minNum) {
+    public void setMinNum(int minNum) {
         this.minNum = minNum;
     }
 
-    public void setMinPrice(String minPrice) {
+    public void setMinPrice(int minPrice) {
         this.minPrice = minPrice;
     }
 
@@ -86,12 +89,27 @@ public class PublicFoods {
         this.modifyTime = modifyTime;
     }
 
-    public void setSubmitter(String submitter) {
+    public void setSubmitter(int submitter) {
         this.submitter = submitter;
     }
 
     public void setVerify(boolean verify) {
         this.verify = verify;
+    }
+
+    public Dictionary toDictionary(){
+        Dictionary tmp = new Hashtable();
+        tmp.put("fid", getFid());
+        tmp.put("foodName", getFoodName());
+        tmp.put("area", getArea());
+        tmp.put("minNum", getMinNum());
+        tmp.put("maxNum", getMaxNum());
+        tmp.put("minPrice", getMinPrice());
+        tmp.put("maxPrice", getMaxPrice());
+        tmp.put("submitter", getSubmitter());
+        tmp.put("verify", isVerify());
+        tmp.put("modifyTime", getModifyTime());
+        return tmp;
     }
 }
 

@@ -6,11 +6,11 @@ public class PrivateFoods {
     private int fid;
     private String foodName;
     private String area;
-    private String minNum;
-    private String maxNum;
-    private String minPrice;
-    private String maxPrice;
-    private String owner;
+    private int minNum;
+    private int maxNum;
+    private int minPrice;
+    private int maxPrice;
+    private int owner;
     private boolean verify;
     private Timestamp modifyTime;
 
@@ -26,28 +26,28 @@ public class PrivateFoods {
         return foodName;
     }
 
-    public String getMaxNum() {
+    public int getMaxNum() {
         return maxNum;
     }
 
-    public String getMaxPrice() {
+    public int getMaxPrice() {
         return maxPrice;
     }
 
-    public String getMinNum() {
+    public int getMinNum() {
         return minNum;
     }
 
-    public String getMinPrice() {
+    public int getMinPrice() {
         return minPrice;
-    }
-
-    public String getOwner() {
-        return owner;
     }
 
     public Timestamp getModifyTime() {
         return modifyTime;
+    }
+
+    public int getOwner() {
+        return owner;
     }
 
     public boolean isVerify() {
@@ -66,19 +66,19 @@ public class PrivateFoods {
         this.foodName = foodName;
     }
 
-    public void setMaxNum(String maxNum) {
+    public void setMaxNum(int maxNum) {
         this.maxNum = maxNum;
     }
 
-    public void setMaxPrice(String maxPrice) {
+    public void setMaxPrice(int maxPrice) {
         this.maxPrice = maxPrice;
     }
 
-    public void setMinNum(String minNum) {
+    public void setMinNum(int minNum) {
         this.minNum = minNum;
     }
 
-    public void setMinPrice(String minPrice) {
+    public void setMinPrice(int minPrice) {
         this.minPrice = minPrice;
     }
 
@@ -86,7 +86,7 @@ public class PrivateFoods {
         this.modifyTime = modifyTime;
     }
 
-    public void setOwner(String owner) {
+    public void setOwner(int owner) {
         this.owner = owner;
     }
 
