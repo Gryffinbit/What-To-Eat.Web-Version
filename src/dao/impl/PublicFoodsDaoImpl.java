@@ -1,6 +1,5 @@
 package dao.impl;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,21 +8,20 @@ import java.util.List;
 
 import entity.PublicFoods;
 import dao.PublicFoodsDao;
-import utils.ConnDb;
+import utils.DbManager;
 
 public class PublicFoodsDaoImpl implements PublicFoodsDao {
-    private Connection conn = null;
+    private DbManager db = null;
 
-    public PublicFoodsDaoImpl() {
-        conn = new ConnDb().getConnect();
+    public PublicFoodsDaoImpl(){
+        db = new DbManager();
     }
-
     @Override
     public boolean add(PublicFoods food) {
         String sql = "insert into PublicFoods(`foodName`,`area`,`minNum`,`maxNum`,`minPrice`,`maxPrice`," +
                 "`submitter`,`verify`,`modifyTime`) values(?,?,?,?,?,?,?,?,?)";
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = db.prepSql(sql);
             ps.setObject(1, food.getFoodName());
             ps.setObject(2, food.getArea());
             ps.setObject(3, food.getMinNum());
@@ -35,6 +33,7 @@ public class PublicFoodsDaoImpl implements PublicFoodsDao {
             ps.setObject(9, food.getModifyTime());
             int res = ps.executeUpdate();
             ps.close();
+            db.getConnect().close();
             if (0 != res)
                 return true;
         } catch (SQLException e) {
@@ -47,10 +46,11 @@ public class PublicFoodsDaoImpl implements PublicFoodsDao {
     public boolean delete(int fid) {
         String sql = "delete from PublicFoods where fid=?";
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = db.prepSql(sql);
             ps.setObject(1, fid);
             int res = ps.executeUpdate();
             ps.close();
+            db.getConnect().close();
             if (res != 0)
                 return true;
         } catch (SQLException e) {
@@ -64,7 +64,7 @@ public class PublicFoodsDaoImpl implements PublicFoodsDao {
         String sql = "update PublicFoods set `foodName`=?,`area`=?,`minNum`=?,`maxNum`=?,`minPrice`=?," +
                 "`maxPrice`=?,`submitter`=?,`verify`=?,`modifyTime`=? where fid=?";
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = db.prepSql(sql);
             ps.setObject(1, food.getFoodName());
             ps.setObject(2, food.getArea());
             ps.setObject(3, food.getMinNum());
@@ -77,6 +77,7 @@ public class PublicFoodsDaoImpl implements PublicFoodsDao {
             ps.setObject(10, fid);
             int res = ps.executeUpdate();
             ps.close();
+            db.getConnect().close();
             if (0 != res)
                 return true;
         } catch (SQLException e) {
@@ -90,7 +91,7 @@ public class PublicFoodsDaoImpl implements PublicFoodsDao {
         String sql = "select * from PublicFoods where fid=?";
         PublicFoods food = null;
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = db.prepSql(sql);
             ps.setObject(1, fid);
             ResultSet result = ps.executeQuery();
             if (result.next()) {
@@ -107,6 +108,7 @@ public class PublicFoodsDaoImpl implements PublicFoodsDao {
                 food.setModifyTime(result.getTimestamp("modifyTime"));
             }
             ps.close();
+            db.getConnect().close();
         } catch (SQLException e) {
             e.printStackTrace();
             food = null;
@@ -118,11 +120,12 @@ public class PublicFoodsDaoImpl implements PublicFoodsDao {
     public boolean doVerify(int fid, boolean verify) {
         String sql = "update PublicFoods set `verify`=? where fid=?";
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = db.prepSql(sql);
             ps.setObject(1, verify);
             ps.setObject(2, fid);
             int res = ps.executeUpdate();
             ps.close();
+            db.getConnect().close();
             if (0 != res)
                 return true;
         } catch (SQLException e) {
@@ -136,7 +139,7 @@ public class PublicFoodsDaoImpl implements PublicFoodsDao {
         String sql = "select * from PublicFoods";
         List<PublicFoods> foods = new ArrayList<PublicFoods>();
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = db.prepSql(sql);
             ResultSet result = ps.executeQuery();
             System.out.println(result);
             while (result.next()) {
@@ -154,6 +157,7 @@ public class PublicFoodsDaoImpl implements PublicFoodsDao {
                 foods.add(food);
             }
             ps.close();
+            db.getConnect().close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
