@@ -9,33 +9,28 @@ import java.util.List;
 import entity.PublicFoods;
 import dao.PublicFoodsDao;
 import utils.DbManager;
+import utils.FoodTools;
 
 public class PublicFoodsDaoImpl implements PublicFoodsDao {
     private DbManager db = null;
 
-    public PublicFoodsDaoImpl(){
+    public PublicFoodsDaoImpl() {
         db = new DbManager();
     }
+
     @Override
     public boolean add(PublicFoods food) {
         String sql = "insert into PublicFoods(`foodName`,`area`,`minNum`,`maxNum`,`minPrice`,`maxPrice`," +
-                "`submitter`,`verify`,`modifyTime`) values(?,?,?,?,?,?,?,?,?)";
+                "`submitter`,`modifyTime`, `verify`) values(?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement ps = db.prepSql(sql);
-            ps.setObject(1, food.getFoodName());
-            ps.setObject(2, food.getArea());
-            ps.setObject(3, food.getMinNum());
-            ps.setObject(4, food.getMaxNum());
-            ps.setObject(5, food.getMinPrice());
-            ps.setObject(6, food.getMaxPrice());
-            ps.setObject(7, food.getSubmitter());
-            ps.setObject(8, food.isVerify());
-            ps.setObject(9, food.getModifyTime());
-            int res = ps.executeUpdate();
-            ps.close();
-            db.getConnect().close();
-            if (0 != res)
-                return true;
+            if (FoodTools.setPSByPbFood(ps, food)) {
+                int res = ps.executeUpdate();
+                ps.close();
+                db.getConnect().close();
+                if (0 != res)
+                    return true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,24 +57,17 @@ public class PublicFoodsDaoImpl implements PublicFoodsDao {
     @Override
     public boolean modify(int fid, PublicFoods food) {
         String sql = "update PublicFoods set `foodName`=?,`area`=?,`minNum`=?,`maxNum`=?,`minPrice`=?," +
-                "`maxPrice`=?,`submitter`=?,`verify`=?,`modifyTime`=? where fid=?";
+                "`maxPrice`=?,`submitter`=?,`modifyTime`=?,`verify`=? where fid=?";
         try {
             PreparedStatement ps = db.prepSql(sql);
-            ps.setObject(1, food.getFoodName());
-            ps.setObject(2, food.getArea());
-            ps.setObject(3, food.getMinNum());
-            ps.setObject(4, food.getMaxNum());
-            ps.setObject(5, food.getMinPrice());
-            ps.setObject(6, food.getMaxPrice());
-            ps.setObject(7, food.getSubmitter());
-            ps.setObject(8, food.isVerify());
-            ps.setObject(9, food.getModifyTime());
-            ps.setObject(10, fid);
-            int res = ps.executeUpdate();
-            ps.close();
-            db.getConnect().close();
-            if (0 != res)
-                return true;
+            if (FoodTools.setPSByPbFood(ps, food)) {
+                ps.setObject(10, fid);
+                int res = ps.executeUpdate();
+                ps.close();
+                db.getConnect().close();
+                if (0 != res)
+                    return true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -95,17 +83,7 @@ public class PublicFoodsDaoImpl implements PublicFoodsDao {
             ps.setObject(1, fid);
             ResultSet result = ps.executeQuery();
             if (result.next()) {
-                food = new PublicFoods();
-                food.setFid(result.getInt("fid"));
-                food.setFoodName(result.getString("foodName"));
-                food.setArea(result.getString("area"));
-                food.setMinNum(result.getInt("minNum"));
-                food.setMaxNum(result.getInt("maxNum"));
-                food.setMinPrice(result.getInt("minPrice"));
-                food.setMaxPrice(result.getInt("maxPrice"));
-                food.setSubmitter(result.getInt("submitter"));
-                food.setVerify(result.getBoolean("verify"));
-                food.setModifyTime(result.getTimestamp("modifyTime"));
+                food = FoodTools.createPbFoodByRS(result);
             }
             ps.close();
             db.getConnect().close();
@@ -143,18 +121,9 @@ public class PublicFoodsDaoImpl implements PublicFoodsDao {
             ResultSet result = ps.executeQuery();
             System.out.println(result);
             while (result.next()) {
-                PublicFoods food = new PublicFoods();
-                food.setFid(result.getInt("fid"));
-                food.setFoodName(result.getString("foodName"));
-                food.setArea(result.getString("area"));
-                food.setMinNum(result.getInt("minNum"));
-                food.setMaxNum(result.getInt("maxNum"));
-                food.setMinPrice(result.getInt("minPrice"));
-                food.setMaxPrice(result.getInt("maxPrice"));
-                food.setSubmitter(result.getInt("submitter"));
-                food.setVerify(result.getBoolean("verify"));
-                food.setModifyTime(result.getTimestamp("modifyTime"));
-                foods.add(food);
+                PublicFoods food = FoodTools.createPbFoodByRS(result);
+                if (null != food)
+                    foods.add(food);
             }
             ps.close();
             db.getConnect().close();

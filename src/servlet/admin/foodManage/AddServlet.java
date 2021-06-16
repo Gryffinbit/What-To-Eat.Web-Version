@@ -23,7 +23,7 @@ public class AddServlet extends HttpServlet {
         Hashtable ret = new Hashtable();
         ret.put("code",500);
         ret.put("msg","添加失败");
-        if(FoodTools.setFoodPrimByReq(food, request)){
+        if(FoodTools.setPbFoodPrimByReq(food, request)){
             food.setVerify(true);
             PublicFoodsServiceImpl pbFdServiceImpl = new PublicFoodsServiceImpl();
             if(pbFdServiceImpl.addFood(food)){

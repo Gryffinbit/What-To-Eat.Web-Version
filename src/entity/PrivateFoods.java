@@ -1,6 +1,8 @@
 package entity;
 
 import java.sql.Timestamp;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 public class PrivateFoods {
     private int fid;
@@ -11,7 +13,6 @@ public class PrivateFoods {
     private int minPrice;
     private int maxPrice;
     private int owner;
-    private boolean verify;
     private Timestamp modifyTime;
 
     public int getFid() {
@@ -50,10 +51,6 @@ public class PrivateFoods {
         return owner;
     }
 
-    public boolean isVerify() {
-        return verify;
-    }
-
     public void setArea(String area) {
         this.area = area;
     }
@@ -90,7 +87,17 @@ public class PrivateFoods {
         this.owner = owner;
     }
 
-    public void setVerify(boolean verify) {
-        this.verify = verify;
+    public Dictionary toDictionary(){
+        Dictionary tmp = new Hashtable();
+        tmp.put("fid", getFid());
+        tmp.put("foodName", getFoodName());
+        tmp.put("area", getArea());
+        tmp.put("minNum", getMinNum());
+        tmp.put("maxNum", getMaxNum());
+        tmp.put("minPrice", getMinPrice());
+        tmp.put("maxPrice", getMaxPrice());
+        tmp.put("owner", getOwner());
+        tmp.put("modifyTime", getModifyTime());
+        return tmp;
     }
 }

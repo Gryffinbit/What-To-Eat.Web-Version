@@ -25,7 +25,7 @@ public class ModifyServlet extends HttpServlet {
         ret.put("msg","修改失败");
         try{
             int fid = Integer.parseInt(request.getParameter("fid"));
-            if(FoodTools.setFoodPrimByReq(food, request)){
+            if(FoodTools.setPbFoodPrimByReq(food, request)){
                 food.setVerify(true);
                 PublicFoodsServiceImpl pbFdServiceImpl = new PublicFoodsServiceImpl();
                 if(pbFdServiceImpl.modifyFood(fid, food)){
