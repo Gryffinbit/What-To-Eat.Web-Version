@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 public class CharacterEncodingFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+        System.out.println("CharacterFilter");
         request.setCharacterEncoding("utf-8");
         ((HttpServletRequest)request).getSession().setAttribute("uid", 1);
         chain.doFilter(request, response);
-
     }
 }
