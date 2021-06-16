@@ -162,4 +162,52 @@ public class UsersDaoImpl implements UsersDao {
         }
         return user;
     }
+
+    @Override
+    public Users getUserByName(String userName) {
+        String sql = "select * from Users where userName=?";
+        Users user = null;
+        try {
+            PreparedStatement ps = db.prepSql(sql);
+            ps.setObject(1, userName);
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                user = new Users();
+                user.setUid(result.getInt("uid"));
+                user.setUserName(result.getString("userName"));
+                user.setPassword(result.getString("password"));
+                user.setEmail(result.getString("email"));
+            }
+            ps.close();
+            db.getConnect().close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            user = null;
+        }
+        return user;
+    }
+
+    @Override
+    public Users getUserByEmail(String email) {
+        String sql = "select * from Users where email=?";
+        Users user = null;
+        try {
+            PreparedStatement ps = db.prepSql(sql);
+            ps.setObject(1, email);
+            ResultSet result = ps.executeQuery();
+            if (result.next()) {
+                user = new Users();
+                user.setUid(result.getInt("uid"));
+                user.setUserName(result.getString("userName"));
+                user.setPassword(result.getString("password"));
+                user.setEmail(result.getString("email"));
+            }
+            ps.close();
+            db.getConnect().close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            user = null;
+        }
+        return user;
+    }
 }
