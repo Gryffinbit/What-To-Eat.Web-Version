@@ -1,6 +1,8 @@
 package entity;
 
 import java.sql.Timestamp;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 public class Users {
     private int uid;
@@ -56,5 +58,15 @@ public class Users {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+    public Dictionary toDictionary(){
+        Dictionary tmp = new Hashtable();
+        tmp.put("uid", getUid());
+        tmp.put("nameName", getUserName());
+        tmp.put("email",getEmail());
+        tmp.put("regTime",getRegTime());
+        tmp.put("isAdmin",isAdmin());
+
+        return tmp;
     }
 }
