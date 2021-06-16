@@ -18,7 +18,7 @@ public class BlackListFoodsDaoImpl implements BlackListFoodsDao {
 
         String sql = "insert into BlackListFoods(`uid`,`fid`) values(?,?)";
         try {
-            if(!db.getConnect().isValid(3)) db = new DbManager();
+            if(!db.getConnect().isValid(1)) db = new DbManager();
             PreparedStatement ps = db.prepSql(sql);
             ps.setObject(1, uid);
             ps.setObject(2, fid);
@@ -37,6 +37,7 @@ public class BlackListFoodsDaoImpl implements BlackListFoodsDao {
     public boolean exist(int uid, int fid) {
         String sql = "select * from BlackListFoods where uid=? and fid=?";
         try {
+            if(!db.getConnect().isValid(1)) db = new DbManager();
             PreparedStatement ps = db.prepSql(sql);
             ps.setObject(1, uid);
             ps.setObject(2, fid);

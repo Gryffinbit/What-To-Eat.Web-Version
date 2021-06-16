@@ -21,4 +21,6 @@ public interface PublicFoodsService {
     boolean doVerify(int fid, boolean verify);
 
     boolean exist(int fid);
+
+    int generate(int uid, String area, int minPrice, int maxPrice, int minNum, int maxNum);
 }

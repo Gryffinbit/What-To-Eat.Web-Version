@@ -10,4 +10,5 @@ public interface PublicFoodsDao {
     List<PublicFoods> getAll();
     PublicFoods getFoodById(int fid);
     boolean doVerify(int fid, boolean verify);
+    List<PublicFoods> generate(int uid, String area, int minPrice, int maxPrice, int minNum, int maxNum);
 }

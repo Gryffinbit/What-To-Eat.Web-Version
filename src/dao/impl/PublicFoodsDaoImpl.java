@@ -113,6 +113,32 @@ public class PublicFoodsDaoImpl implements PublicFoodsDao {
     }
 
     @Override
+    public List<PublicFoods> generate(int uid, String area, int minPrice, int maxPrice, int minNum, int maxNum) {
+        String sql = "select * from PublicFoods where area like ? " +
+                "and minPrice>=? and maxPrice <=? and minNum>=? and maxNum<=?";
+        List<PublicFoods> foods = new ArrayList<PublicFoods>();
+        try {
+            PreparedStatement ps = db.prepSql(sql);
+            ps.setObject(1, area);
+            ps.setObject(2, minPrice);
+            ps.setObject(3, maxPrice);
+            ps.setObject(4, minNum);
+            ps.setObject(5, maxNum);
+            ResultSet result = ps.executeQuery();
+            while (result.next()) {
+                PublicFoods food = FoodTools.createPbFoodByRS(result);
+                if (null != food)
+                    foods.add(food);
+            }
+            ps.close();
+            db.getConnect().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return foods;
+    }
+
+    @Override
     public List<PublicFoods> getAll() {
         String sql = "select * from PublicFoods";
         List<PublicFoods> foods = new ArrayList<PublicFoods>();

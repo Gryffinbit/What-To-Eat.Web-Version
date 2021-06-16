@@ -2,6 +2,7 @@ package dao.impl;
 
 import dao.PrivateFoodsDao;
 import entity.PrivateFoods;
+import entity.PublicFoods;
 import utils.DbManager;
 import utils.FoodTools;
 
@@ -113,4 +114,32 @@ public class PrivateFoodsDaoImpl implements PrivateFoodsDao {
         }
         return food;
     }
+
+    @Override
+    public List<PrivateFoods> generate(String area, int minPrice, int maxPrice, int minNum, int maxNum) {
+        String sql = "select * from PrivateFoods where area like ? " +
+                "and minPrice>=? and maxPrice <=? and minNum>=? and maxNum<=?";
+        List<PrivateFoods> foods = new ArrayList<PrivateFoods>();
+        try {
+            PreparedStatement ps = db.prepSql(sql);
+            ps.setObject(1, area);
+            ps.setObject(2, minPrice);
+            ps.setObject(3, maxPrice);
+            ps.setObject(4, minNum);
+            ps.setObject(5, maxNum);
+            ResultSet result = ps.executeQuery();
+            while (result.next()) {
+                PrivateFoods food = FoodTools.createPriFoodByRS(result);
+                if (null != food)
+                    foods.add(food);
+            }
+            ps.close();
+            db.getConnect().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return foods;
+    }
+
+
 }

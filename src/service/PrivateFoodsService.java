@@ -17,4 +17,6 @@ public interface PrivateFoodsService {
     boolean modifyFood(int fid, PrivateFoods food);
 
     boolean exist(int fid);
+
+    int generate(String area, int minPrice, int maxPrice, int minNum, int maxNum);
 }

@@ -1,13 +1,12 @@
 package service.impl;
 
 import dao.impl.PrivateFoodsDaoImpl;
+import dao.impl.PublicFoodsDaoImpl;
 import entity.PrivateFoods;
+import entity.PublicFoods;
 import service.PrivateFoodsService;
 
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 public class PrivateFoodsServiceImpl implements PrivateFoodsService {
 
@@ -65,5 +64,12 @@ public class PrivateFoodsServiceImpl implements PrivateFoodsService {
     @Override
     public boolean exist(int fid) {
         return 0 != getFoodById(fid).size();
+    }
+
+    @Override
+    public int generate(String area, int minPrice, int maxPrice, int minNum, int maxNum) {
+        List<PrivateFoods> foods = new PrivateFoodsDaoImpl().generate(area, minPrice, maxPrice, minNum, maxNum);
+        int rand = new Random().nextInt(foods.size());
+        return foods.get(rand).getFid();
     }
 }
