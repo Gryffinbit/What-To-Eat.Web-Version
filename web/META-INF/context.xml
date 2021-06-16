@@ -5,7 +5,7 @@
             auth="Container"
             type="javax.sql.DataSource"
             maxActive="100" maxIdle="30" maxWait="10000"
-            username="root" password="root"
+            username="root" password="root1234"
             driverClassName="com.mysql.cj.jdbc.Driver"
             url="jdbc:mysql://localhost:3306/what2eat?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=Asia/Shanghai"
     />
