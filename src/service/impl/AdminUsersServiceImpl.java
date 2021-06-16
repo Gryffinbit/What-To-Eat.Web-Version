@@ -32,10 +32,10 @@ public class AdminUsersServiceImpl implements AdminUsersService {
         Users tmp = getUser.getUserById(uid);
         if (null != tmp) {
             users.put("uid", tmp.getUid());
-            users.put("userName",tmp.getUserName());
-            users.put("email",tmp.getEmail());
-            users.put("regTime",tmp.getRegTime());
-            users.put("isAdmin",tmp.isAdmin());
+            users.put("userName", tmp.getUserName());
+            users.put("email", tmp.getEmail());
+            users.put("regTime", tmp.getRegTime());
+            users.put("isAdmin", tmp.isAdmin());
         }
         return users;
     }
@@ -43,24 +43,27 @@ public class AdminUsersServiceImpl implements AdminUsersService {
     @Override
     public boolean modifyUsers(int uid, Users user) {
         UsersDaoImpl modUsers = new UsersDaoImpl();
-        if(exist(uid))
-            return modUsers.userModify(uid,user);
+        Users oldUser = modUsers.getUserById(uid);
+        if (null != oldUser && !oldUser.getEmail().equals(user.getEmail()) && !oldUser.getUserName().equals(user.getUserName()))
+            return modUsers.userModify(uid, user);
         return false;
     }
 
     @Override
     public boolean pwdModify(int uid, Users user) {
         UsersDaoImpl modPwd = new UsersDaoImpl();
-        if(exist(uid))
-            return modPwd.pwdModify(uid,user);
+        if (exist(uid))
+            return modPwd.pwdModify(uid, user);
         return false;
     }
 
 
     @Override
     public boolean addUsers(Users user) {
-        UsersDaoImpl addUser = new UsersDaoImpl();
-        return addUser.add(user);
+        UsersDaoImpl addUserDaoImpl = new UsersDaoImpl();
+        if (addUserDaoImpl.getUserByName(user.getUserName()) == null && addUserDaoImpl.getUserByEmail(user.getEmail()) == null)
+            return addUserDaoImpl.add(user);
+        return false;
     }
 
     @Override
@@ -72,15 +75,12 @@ public class AdminUsersServiceImpl implements AdminUsersService {
     @Override
     public boolean adminLogin(String userName, String email, String password) {
         UsersDaoImpl userDao = new UsersDaoImpl();
-
         Users user = null;
-
-        user = userDao.getUserByName(userName) != null ? userDao.getUserByName(userName) : userDao.getUserByEmail(email);
-
+        user = userDao.getUserByName(userName);
+        if (user == null)
+            user = userDao.getUserByEmail(email);
         if (user != null) {
-            if(new SHA256(password).toString()== user.getPassword()&& user.isAdmin()) {
-                return true;
-            }
+            return new SHA256(password).toString().equals(user.getPassword()) && user.isAdmin();
         }
         return false;
     }

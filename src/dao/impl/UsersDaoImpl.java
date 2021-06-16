@@ -19,8 +19,9 @@ public class UsersDaoImpl implements UsersDao {
     }
     @Override
     public boolean add(Users user) {
-        String sql = "insert into Users('userName','password','email','regTime','isAdmin')values(?,?,?,?,?)";
+        String sql = "insert into Users(`userName`,`password`,`email`,`regTime`,`isAdmin`)values(?,?,?,?,?)";
         try{
+            if(!db.getConnect().isValid(1)) db = new DbManager();
             PreparedStatement ps = db.prepSql(sql);
             ps.setObject(1,user.getUserName());
             ps.setObject(2,user.getPassword());
@@ -42,6 +43,7 @@ public class UsersDaoImpl implements UsersDao {
     public boolean delete(int uid) {
         String sql = "delete from Users where uid=?";
         try {
+            if(!db.getConnect().isValid(1)) db = new DbManager();
             PreparedStatement ps = db.prepSql(sql);
             ps.setObject(1,uid);
             int res = ps.executeUpdate();
@@ -57,8 +59,9 @@ public class UsersDaoImpl implements UsersDao {
 
     @Override
     public boolean adminModify(int uid, Users user) {
-        String sql = "Update Users set 'userName'=?,'password'=?,'email'=?,'isAdmin'=? where uid=?";
+        String sql = "Update Users set `userName`=?,`password`=?,`email`=?,`isAdmin`=? where uid=?";
         try{
+            if(!db.getConnect().isValid(1)) db = new DbManager();
             PreparedStatement ps = db.prepSql(sql);
             ps.setObject(1,user.getUserName());
             ps.setObject(2,user.getPassword());
@@ -78,8 +81,9 @@ public class UsersDaoImpl implements UsersDao {
 
     @Override
     public boolean userModify(int uid, Users user) {
-        String sql = "Update Users set 'userName'=?,'email'=? where uid=?";
+        String sql = "Update Users set `userName`=?,`email`=? where uid=?";
         try{
+            if(!db.getConnect().isValid(1)) db = new DbManager();
             PreparedStatement ps = db.prepSql(sql);
             ps.setObject(1,user.getUserName());
             ps.setObject(2,user.getEmail());
@@ -97,8 +101,9 @@ public class UsersDaoImpl implements UsersDao {
 
     @Override
     public boolean pwdModify(int uid, Users user) {
-        String sql = "Update Users set 'password'=? where uid=?";
+        String sql = "Update Users set `password`=? where uid=?";
         try{
+            if(!db.getConnect().isValid(1)) db = new DbManager();
             PreparedStatement ps = db.prepSql(sql);
             ps.setObject(1,user.getPassword());
             ps.setObject(2,uid);
@@ -118,6 +123,7 @@ public class UsersDaoImpl implements UsersDao {
         String sql = "select * from Users";
         List<Users> users = new ArrayList<Users>();   //用来存放查询到的单个user，组成一个users表
         try{
+            if(!db.getConnect().isValid(1)) db = new DbManager();
             PreparedStatement ps = db.prepSql(sql);
             ResultSet result = ps.executeQuery();
             System.out.println(result);
@@ -143,6 +149,7 @@ public class UsersDaoImpl implements UsersDao {
         String sql = "select * from Users where uid=?";
         Users user = null;
         try {
+            if(!db.getConnect().isValid(1)) db = new DbManager();
             PreparedStatement ps = db.prepSql(sql);
             ps.setObject(1, uid);
             ResultSet result = ps.executeQuery();
@@ -168,6 +175,7 @@ public class UsersDaoImpl implements UsersDao {
         String sql = "select * from Users where userName=?";
         Users user = null;
         try {
+            if(!db.getConnect().isValid(1)) db = new DbManager();
             PreparedStatement ps = db.prepSql(sql);
             ps.setObject(1, userName);
             ResultSet result = ps.executeQuery();
@@ -177,6 +185,7 @@ public class UsersDaoImpl implements UsersDao {
                 user.setUserName(result.getString("userName"));
                 user.setPassword(result.getString("password"));
                 user.setEmail(result.getString("email"));
+                user.setAdmin(result.getBoolean("isAdmin"));
             }
             ps.close();
             db.getConnect().close();
@@ -192,6 +201,7 @@ public class UsersDaoImpl implements UsersDao {
         String sql = "select * from Users where email=?";
         Users user = null;
         try {
+            if(!db.getConnect().isValid(1)) db = new DbManager();
             PreparedStatement ps = db.prepSql(sql);
             ps.setObject(1, email);
             ResultSet result = ps.executeQuery();
@@ -201,6 +211,7 @@ public class UsersDaoImpl implements UsersDao {
                 user.setUserName(result.getString("userName"));
                 user.setPassword(result.getString("password"));
                 user.setEmail(result.getString("email"));
+                user.setAdmin(result.getBoolean("isAdmin"));
             }
             ps.close();
             db.getConnect().close();

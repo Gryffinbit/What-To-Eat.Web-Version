@@ -1,29 +1,26 @@
 package servlet.admin;
 
+import com.alibaba.fastjson.JSON;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Hashtable;
 
-@WebServlet("/admin/login")
-public class logout extends HttpServlet {
+@WebServlet("/admin/logout")
+public class logoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-        resp.setCharacterEncoding("UTF-8");
+        Hashtable ret = new Hashtable();
+        ret.put("code", 200);
+        ret.put("msg", "退出成功");
+        req.getSession().invalidate();
         resp.setContentType("application/json; charset=utf-8");
-        PrintWriter out = resp.getWriter();
-        req.setCharacterEncoding("UTF-8");
-        req.getRequestDispatcher("").include(req, resp);
-        HttpSession session = req.getSession();
-        // 清除数据
-        session.invalidate();
-        //成功注销
-        out.close();
-
+        PrintWriter writer = resp.getWriter();
+        writer.write(JSON.toJSONString(ret));
     }
 }

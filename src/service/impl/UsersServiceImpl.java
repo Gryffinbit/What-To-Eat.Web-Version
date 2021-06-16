@@ -27,15 +27,11 @@ public class UsersServiceImpl implements UsersService {
     public boolean login(String userName,String email,String password) {
 
         UsersDaoImpl userDao = new UsersDaoImpl();
-
         Users user = null;
-
         user = userDao.getUserByName(userName) != null ? userDao.getUserByName(userName) : userDao.getUserByEmail(email);
-
+        System.out.println(user.getPassword());
         if (user != null) {
-            if(new SHA256(password).toString()== user.getPassword()) {
-                return true;
-            }
+            return new SHA256(password).toString().equals(user.getPassword());
         }
         return false;
     }

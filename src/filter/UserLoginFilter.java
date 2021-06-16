@@ -10,13 +10,19 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Hashtable;
 
-//@WebFilter(filterName = "UserLoginFilter", urlPatterns = {"/*"})
+@WebFilter(filterName = "UserLoginFilter", urlPatterns = {"/*"})
 public class UserLoginFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         System.out.println("loginFilter");
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
+        String uri = req.getRequestURI();
+        if(uri.equals("/login")||uri.equals("/admin/login")||uri.equals("/register"))
+        {
+            chain.doFilter(request, response);
+            return;
+        }
         try{
             if (null != req.getSession().getAttribute("login") && (boolean)req.getSession().getAttribute("login")) {
                 chain.doFilter(request, response);
